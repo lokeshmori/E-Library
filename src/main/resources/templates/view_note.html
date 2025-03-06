@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base :: layout( ~{:: title} , ~{:: section} )}">
+<head>
+    <meta charset="UTF-8">
+    <title>view</title>
+</head>
+<body>
+
+<section>
+
+    <th:block th:if="${ user!=NULL}">
+    <div class="container-fluid p-3 my-3  " >
+        <h4 class="text-center"> All My Books</h4>
+        <th:block th:if="${session.msg}">
+            <div class="alert alert-success alert-dismissible fade show text-center " role="alert">
+                <span th:text="${session.msg}"></span>
+            </div>
+
+            <th:block th:text="${@userServiceImp.removeSessionMassage()}"> </th:block>
+
+        </th:block>
+
+        <div class="row">
+            <div th:each="n:${notesList}" class="col-md-10 offset-md-1 mt-2">
+                <div class="card shadow p-2 mb-2 bg-body rounded">
+                    <div class="card-body">
+                        <div class="text-center">
+                            <i class="fa-solid fa-book fa-2x"></i>
+                        </div>
+                         <p class="fw-bold">[[${n.title}]]</p>
+                        <p>[[${n.description}]]</p>
+                        <p>Publish Date :  <span class="fw-bold text-primary">[[${n.date}]]</span></p>
+                        <div class="text-center">
+                            <a th:href="@{'/user/edit_notes/'+${n.id}}" class="btn btn-primary btn-sm">Edit</a>
+                            <a  th:href="@{'/user/delete_notes/'+${n.id}}" class="btn btn-danger btn-sm">Delete</a>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+                 <div class="row mt-3">
+
+                     <div class="col-md-4 offset-md-1 text-right p-2">
+                         <p class="fw-bold">Total Books :[[${totalElements}]] </p>
+                     </div>
+                         <div class="col-md-5">
+                         <nav aria-label="Page navigation example" class="text-center">
+
+
+                             <ul class="pagination ">
+
+
+                                 <li  th:if="${currentPage!= 0}" class="page-item"><a class="page-link" th:href="@{'/user/view_notes?pageNo='+${currentPage-1}}" >Previous</a></li>
+
+                                 <li class="page-item" th:each="i:${#numbers.sequence(1,totalPage)}" th:classappend="${currentPage ==i-1 ? 'active':''}">
+                                     <a class="page-link"  th:href="@{'/user/view_notes?pageNo='+${i-1}}" >[[${i}]]</a></li>
+
+                                 <li  th:if="${currentPage+1 != totalPage}" class="page-item"><a class="page-link" th:href="@{'/user/view_notes?pageNo='+${currentPage+1}}">Next</a></li>
+                             </ul>
+
+                         </nav>
+
+                         </div>
+
+                 </div>
+
+
+    </div>
+    </th:block>
+
+    <th:block th:if="${ user==NULL}">
+        <div class="container-fluid p-3 my-3  " >
+            <h4 class="text-center text-secondary"> All Available Books </h4>
+            <th:block th:if="${session.msg}">
+                <div class="alert alert-success alert-dismissible fade show text-center " role="alert">
+                    <span th:text="${session.msg}"></span>
+                </div>
+
+                <th:block th:text="${@userServiceImp.removeSessionMassage()}"> </th:block>
+
+            </th:block>
+
+            <div class="row">
+                <div th:each="n:${notesList}" class="col-md-10 offset-md-1 mt-2">
+                    <div class="card shadow p-2 mb-2 bg-body rounded">
+                        <div class="card-body">
+                            <div class="text-center">
+                                <i class="fa-solid fa-book fa-2x"></i> <h3>[[${n.title}]] </h3>
+
+                            </div>
+                            <p class="fw-bold "> Description :  <span>[[${n.description}]]</span></p>
+                            <p class="fw-bold ">Publish Date :  <span class="fw-bold text-primary">[[${n.date}]]</span></p>
+                            <div class="d-flex justify-content-between">
+
+                                <button th:attr="onclick='viewPDF(\'' + ${n.filePath} + '\', \'' + ${n.title} + '\')'" class="btn btn-secondary btn-sm" target="_blank" >
+                                    Read Online
+                                </button>
+
+                                <a th:href="@{'/user/edit_notes/'+${n.id}}" class="btn btn-primary btn-sm ">Edit</a>
+
+                                <a th:if="${n.filePath != null}" th:href="@{/book/download/{fileName}(fileName=${n.filePath.substring(n.filePath.lastIndexOf('/') + 1)})}" target="_blank" class="btn btn-danger btn-sm">Download</a>
+                                <span th:if="${n.filePath == null}" class="text-muted">No file available</span>
+
+
+                            </div>
+
+                        </div>
+                    </div>
+
+
+
+
+                    </div>
+
+                <div id="pdfViewer" style="display: none;">
+                    <h3>Reading: <span id="pdfTitle"></span></h3>
+                    <iframe id="pdfFrame" width="100%" height="600px"></iframe>
+                    <button onclick="closeViewer()">Close</button>
+                </div>
+
+                <script>
+                    // Function to show PDF in iframe
+                    function viewPDF(fileName, title) {
+                        document.getElementById("pdfViewer").style.display = "block";
+                        document.getElementById("pdfTitle").innerText = title;
+                        document.getElementById("pdfFrame").src = `/books/view/${fileName}`;
+                    }
+
+                    // Function to close the PDF viewer
+                    function closeViewer() {
+                        document.getElementById("pdfViewer").style.display = "none";
+                        document.getElementById("pdfFrame").src = "";
+                    }
+                </script>
+
+
+                    </div>
+            <div class="row mt-3">
+
+                <div class="col-md-4 offset-md-1 text-right p-2">
+                    <p class="fw-bold">Total Available Books :[[${totalElements}]] </p>
+                </div>
+                <div class="col-md-5">
+                    <nav aria-label="Page navigation example" class="text-center">
+
+
+                        <ul class="pagination ">
+
+
+                            <li  th:if="${currentPage!= 0}" class="page-item"><a class="page-link" th:href="@{'/view_notes?pageNo='+${currentPage-1}}" >Previous</a></li>
+
+                            <li class="page-item" th:each="i:${#numbers.sequence(1,totalPage)}" th:classappend="${currentPage ==i-1 ? 'active':''}">
+                                <a class="page-link"  th:href="@{'/view_notes?pageNo='+${i-1}}" >[[${i}]]</a></li>
+
+                            <li  th:if="${currentPage+1 != totalPage}" class="page-item"><a class="page-link" th:href="@{'/view_notes?pageNo='+${currentPage+1}}">Next</a></li>
+
+
+                        </ul>
+
+                    </nav>
+
+
+
+
+
+                </div>
+            </div>
+
+
+        </div>
+
+    </th:block>
+
+
+
+
+
+</section>
+
+</body>
+</html>

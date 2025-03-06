@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base :: layout( ~{:: title} , ~{:: section} )}">
+<head>
+    <meta charset="UTF-8">
+    <title>add page</title>
+</head>
+<body>
+
+
+<section>
+
+
+
+    <div class="container-fluid mt-5">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h3 class="text-center font-weight-bold text-info ">Add Your Book</h3>
+
+                        <th:block th:if="${session.msg}">
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <span th:text="${session.msg}"></span>
+                            </div>
+
+                            <th:block th:text="${@userServiceImp.removeSessionMassage()}"> </th:block>
+
+                        </th:block>
+                    </div>
+                    <div class="card-body">
+                        <form action="/user/saveNotes" method="post" enctype="multipart/form-data" >
+
+
+                            <div class="form-group mb-3">
+                                <label for="title">Title</label>
+                                <input type="text" class="form-control" id="title" name="title" placeholder="Enter Notes Title" required>
+                            </div>
+
+
+
+                            <div class="form-group mb-3 ">
+                                <label for="description">Description</label>
+                                <textarea class="form-control" id="description" name="description" rows="6" placeholder="Enter Notes Description" required></textarea>
+                            </div>
+
+
+                                <div class="form-group mb-3">
+                                    <label for="notes">Notes</label>
+                                    <input type="file" class="form-control" id="notes" name="file" placeholder="add your Notes here" accept="application/pdf"  required>
+                                </div>
+
+
+
+
+
+
+
+
+                            <button type="submit" class="btn btn-primary ">Save</button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</section>
+
+</body>
+</html>

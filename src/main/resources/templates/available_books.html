@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Books</title>
+</head>
+<body>
+<h2>Library Books</h2>
+
+<table border="1">
+    <tr>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Read Online</th>
+        <th>Download</th>
+    </tr>
+    <tr th:each="book : ${books}">
+        <td th:text="${book.title}"></td>
+        <td th:text="${book.author}"></td>
+        <td>
+            <button th:attr="onclick='viewPDF(\'' + ${book.filePath} + '\', \'' + ${book.title} + '\')'">
+                Read Online
+            </button>
+        </td>
+        <td>
+            <a th:href="@{/books/download/{fileName}(fileName=${book.filePath})}" target="_blank">Download PDF</a>
+        </td>
+    </tr>
+</table>
+
+<!-- PDF Viewer (Initially Hidden) -->
+<div id="pdfViewer" style="display: none;">
+    <h3>Reading: <span id="pdfTitle"></span></h3>
+    <iframe id="pdfFrame" width="100%" height="600px"></iframe>
+    <button onclick="closeViewer()">Close</button>
+</div>
+
+<script>
+    // Function to show PDF in iframe
+    function viewPDF(fileName, title) {
+        document.getElementById("pdfViewer").style.display = "block";
+        document.getElementById("pdfTitle").innerText = title;
+        document.getElementById("pdfFrame").src = `/books/view/${fileName}`;
+    }
+
+    // Function to close the PDF viewer
+    function closeViewer() {
+        document.getElementById("pdfViewer").style.display = "none";
+        document.getElementById("pdfFrame").src = "";
+    }
+</script>
+</body>
+</html>

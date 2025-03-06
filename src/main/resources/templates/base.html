@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="layout(title,content)">
+<head>
+    <meta charset="UTF-8">
+    <title th:replace="${title}"></title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+          crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+          integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+
+
+<nav class="navbar  navbar-expand-sm bg-info navbar-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#"><i class="fa-solid fa-book-open-reader"></i> E Library </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                <th:block th:if="${ user==NULL}">
+                <li class="nav-item">
+
+
+                        <a class="nav-link active" aria-current="page" href="/"><i class="fa-solid fa-house"></i> Home</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/add_notes"><i class="fa-solid fa-plus"></i> Add Book</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/view_notes"><i class="fa-solid fa-list"></i> Available Books</a>
+                </li>
+
+
+
+
+
+                </th:block>
+
+
+                <th:block th:if="${ user!=NULL}">
+                    <li class="nav-item">
+
+
+                        <a class="nav-link active" aria-current="page" href="/user/index"><i class="fa-solid fa-house"></i> Home</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/user/add_notes"><i class="fa-solid fa-plus"></i> Add Book</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/user/view_notes"><i class="fa-solid fa-list"></i> My Books</a>
+                    </li>
+                </th:block>
+
+
+
+
+            </ul>
+
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+
+                <th:block th:if="${ user==NULL}">
+
+
+
+
+                        <form class="d-flex" action="/search_book" method="get">
+                            <input class="form-control me-2" type="search" placeholder="Search Book" aria-label="Search" name="keyword">
+                            <button class="btn btn-outline-success me-2  " type="submit">Search</button>
+                        </form>
+
+
+
+
+                    <li class="nav-item">
+                        <a  href="register" class="btn btn-ms ms-2 "><i class="fa-solid fa-user-plus"></i> New User</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a  href="login" class="btn btn-ms  ms-1 "><i class="fa-solid fa-right-to-bracket"></i> Login</a>
+                    </li>
+                </th:block>
+                <th:block th:if="${ user !=NULL}">
+
+
+
+                <li class="nav-item">
+                    <a  href="" class="btn btn-ms btn-info "><i class="fa-solid fa-circle-user"></i> [[${user.getUsername()}]]</a>
+                </li>
+
+                <li class="nav-item">
+                    <a  href="/logout" class="btn btn-ms btn-info ms-2 "><i class="fa-solid fa-right-to-bracket"></i> Logout</a>
+                </li>
+
+                </th:block>
+
+
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
+
+<div th:replace="${content}"></div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+</body>
+</html>

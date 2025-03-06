@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base :: layout( ~{:: title} , ~{:: section} )}">
+<head>
+    <meta charset="UTF-8">
+    <title>register</title>
+</head>
+<body>
+<section>
+
+    <div class="container-fluid mt-3">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h3 class="text-center font-weight-bold text-secondary "> User Registration </h3>
+                        <th:block th:if="${session.msg}">
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <span th:text="${session.msg}"></span>
+                            </div>
+
+                            <th:block th:text="${@userServiceImp.removeSessionMassage()}"> </th:block>
+
+                        </th:block>
+
+
+                    </div>
+                    <div class="card-body">
+                        <form action="UserRegister" method="post">
+                            <div class="form-group mb-3">
+                                <label for="username">Username</label>
+                                <input type="text" class="form-control" id="username" name="username" placeholder="Enter Username" required>
+
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="Enter Email" required>
+                            </div>
+
+                             <div class="form-group mb-3">
+                                <label>Gender</label>
+                                <div class="form-check form-check-inline" >
+
+                                        <input type="radio" class="form-check-input" id="male" name="gender" value="Male">
+                                    <label class="form-check-label" for="male">Male</label>
+                                </div>
+
+                                 <div class="form-check form-check-inline">
+                                        <input type="radio" class="form-check-input" id="female" name="gender" value="Female">
+                                    <label class="form-check-label" for="female">Female</label>
+
+                                </div>
+
+                             </div>
+
+
+
+                            <div class="form-group mb-3 ">
+                                <label for="address">Address</label>
+                                <input type="text" class="form-control" id="address" name="address" placeholder="Enter Address">
+                            </div>
+                            <div class="form-group mb-3 ">
+                                <label for="city">City</label>
+                                <input type="text" class="form-control" id="city" name="city" placeholder="Enter City">
+                            </div>
+                            <div class="form-group mb-3 ">
+                                <label for="state">State</label>
+                                <input type="text" class="form-control" id="state" name="state" placeholder="Enter State">
+                            </div>
+                            <div class="form-group mb-3 ">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control" id="password" name="password" placeholder="Enter Password" required>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary col-md-12">Register</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+</body>
+</html>
